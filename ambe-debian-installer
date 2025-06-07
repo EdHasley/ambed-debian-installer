@@ -32,7 +32,7 @@ X32=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_32-1.4.27.tgz
 ARM=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-arm-v7-hf-1.4.27.tgz
 AMBINSTDIR=/root/reflector-install-files/ambed
 DEP="wget git build-essential"
-GITREPO=https://github.com/LX3JL/xlxd.git
+GITREPO=https://github.com/EdHasley/xlxd.git
 echo "------------------------------------------------------------------------------"
 echo " Installing required software..."
 echo "------------------------------------------------------------------------------"
