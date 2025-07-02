@@ -22,4 +22,4 @@ systemctl start|stop|status|restart ambed
 
 **The other parts to this install, if you need it can be found at:**
 
-https://github.com/EdHasley/Multi-Reflector-Installer
+https://github.com/EdHasley/xlxd.git
