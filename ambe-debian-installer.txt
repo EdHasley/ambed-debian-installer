@@ -1,0 +1,120 @@
+#!/bin/bash
+#A tool to install AMBE server.
+#This is essentially a scripted version of:
+#https://github.com/LX3JL/xlxd/blob/master/ambed/readme
+#Step 1: Install Debian 9.x and make sure it has internet and is up to date.
+#Step 2: Plug AMBE Chip(s) into computer.
+#Step 3: Run this script on the computer with the ambe chips.
+#Step 4: Reboot after installation.
+# systemctl status ambed #to show the status
+# systemctl stop ambed #to stop ambed
+# systemctl start ambed #to start ambed
+# ambed logs are part of /var/log/messages
+#Lets begin-------------------------------------------------------------------------------------------------
+WHO=$(whoami)
+if [ "$WHO" != "root" ];
+then
+  echo ""
+  echo "You Must be root to run this script!!"
+  exit 0
+fi
+if [ ! -e "/etc/debian_version" ]
+then
+  echo ""
+  echo "This script is only tested in Debian 8,9 and x64 cpu Arch. for now."
+  exit 0
+fi
+DIRDIR=$(pwd)
+LOCAL_IP=$(ip a | grep inet | grep "eth0\|en" | awk '{print $2}' | tr '/' ' ' | awk '{print $1}')
+ARC=$(lscpu | grep Arch | awk '{print $2}')
+X64=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_64-1.4.27.tgz
+X32=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_32-1.4.27.tgz
+ARM=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-arm-v7-hf-1.4.27.tgz
+AMBINSTDIR=/root/reflector-install-files/ambed
+DEP="wget git build-essential"
+GITREPO=https://github.com/EdHasley/xlxd.git
+echo "------------------------------------------------------------------------------"
+echo " Installing required software..."
+echo "------------------------------------------------------------------------------"
+apt-get -y install $DEP
+mkdir -p /ambed
+mkdir -p $AMBINSTDIR
+if [ ! -e /usr/local/lib/libftd2xx.so ]
+then
+  echo ""
+        echo "------------------------------------------------------------------------------"
+        echo "Downloading and installing FTDI driver...."
+        echo "------------------------------------------------------------------------------"
+        cd $AMBINSTDIR
+        if [ "$ARC" = "x86_64" ];
+        then
+                wget $X64
+                tar xfvz libftd2xx-x86_64-1.4.27.tgz
+                cd release/build
+                cp libftd2xx.* /usr/local/lib
+                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.27
+                ln -sf /usr/local/lib/libftd2xx.so.1.4.27 /usr/local/lib/libftd2xx.so
+        elif [ "$ARC" = "armv71" ];
+        then
+                wget $ARM
+                tar xfvz libftd2xx-arm-v7-hf-1.4.27.tgz
+                cd release/build
+                cp libftd2xx.* /usr/local/lib
+                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.27
+                ln -sf /usr/local/lib/libftd2xx.so.1.4.27 /usr/local/lib/libftd2xx.so
+        elif [ "$ARC" = "i686" ];
+        then
+                wget $X32
+                tar xfvz libftd2xx-x86_32-1.4.27.tgz
+                cd release/build
+                cp libftd2xx.* /usr/local/lib
+                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.27
+                ln -sf /usr/local/lib/libftd2xx.so.1.4.27 /usr/local/lib/libftd2xx.so
+        fi
+else
+        echo "------------------------------------------------------------------------------"
+        echo "It looks like the driver is already installed. If this is wrong, see what '/usr/local/lib/libftd2xx.so' is up to. Skipping FTDI Driver install. "
+fi
+echo "------------------------------------------------------------------------------"
+echo "Downloading and installing AMBED..."
+echo "------------------------------------------------------------------------------"
+cd $AMBINSTDIR
+git clone $GITREPO
+cd $AMBINSTDIR/xlxd/ambed/
+make clean
+make
+make install
+if [ -e ambed ]
+then
+        echo "------------------------------------------------------------------------------"
+        echo "It looks like everything compiled successfully. There is an 'ambed' application file. "
+        echo "------------------------------------------------------------------------------"
+        else
+        echo "------------------------------------------------------------------------------"
+        echo "I dont see an AMBED file after compiling. Look at the errors above and try again. Exiting....."
+        echo "------------------------------------------------------------------------------"
+        exit 0
+fi
+echo ""
+echo ""
+echo "------------------------------------------------------------------------------"
+echo "Copying ambed files and systemd files... "
+echo "------------------------------------------------------------------------------"
+cp ambed /ambed
+cp $DIRDIR/templates/ambed.service /etc/systemd/system/
+sed -i "s/LOCAL-IP/$LOCAL_IP/g" /etc/systemd/system/ambed.service
+systemctl daemon-reload
+systemctl enable ambed
+echo ""
+echo ""
+echo "************************************************************************"
+echo ""
+echo ""
+echo "                   The install is complete.                             "
+echo "              ******* Now reboot the server. *******                    "
+echo "         Use 'systemctl status ambed' to check the status.              "
+echo "            ambed logs are part of /var/log/messages.                   "
+echo "      Just make sure this computer can be accessed over UDP 10100-10199 "
+echo ""
+echo ""
+echo "************************************************************************"
