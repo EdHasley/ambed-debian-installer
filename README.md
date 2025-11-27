@@ -22,8 +22,4 @@ systemctl start|stop|status|restart ambed
 
 **The other parts to this install, if you need it can be found at:**
 
-https://github.com/n5amd/Multi-Reflector-Installer
-
-**For more information, please visit:**
-
-https://n5amd.com/digital-radio-how-tos/build-digital-voice-transcoding-server/
+https://github.com/EdHasley/xlxd.git
