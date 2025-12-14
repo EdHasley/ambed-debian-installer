@@ -27,7 +27,7 @@ fi
 DIRDIR=$(pwd)
 LOCAL_IP=$(ip a | grep inet | grep "eth0\|en" | awk '{print $2}' | tr '/' ' ' | awk '{print $1}')
 ARC=$(lscpu | grep Arch | awk '{print $2}')
-X64=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_64-1.4.27.tgz
+X64=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_64-1.4.34.tgz
 X32=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-x86_32-1.4.27.tgz
 ARM=https://ftdichip.com/wp-content/uploads/2022/07/libftd2xx-arm-v7-hf-1.4.27.tgz
 AMBINSTDIR=/root/reflector-install-files/ambed
