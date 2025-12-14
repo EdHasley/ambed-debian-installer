@@ -49,7 +49,7 @@ then
         if [ "$ARC" = "x86_64" ];
         then
                 wget $X64
-                tar xfvz libftd2xx-x86_64-1.4.27.tgz
+                tar xfvz libftd2xx-x86_64-1.4.34.tgz
                 cd release/build
                 cp libftd2xx.* /usr/local/lib
                 chmod 0755 /usr/local/lib/libftd2xx.so.1.4.27
