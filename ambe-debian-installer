@@ -52,24 +52,24 @@ then
                 tar xfvz libftd2xx-x86_64-1.4.34.tgz
                 cd release/build
                 cp libftd2xx.* /usr/local/lib
-                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.27
-                ln -sf /usr/local/lib/libftd2xx.so.1.4.27 /usr/local/lib/libftd2xx.so
+                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.34
+                ln -sf /usr/local/lib/libftd2xx.so.1.4.34 /usr/local/lib/libftd2xx.so
         elif [ "$ARC" = "armv71" ];
         then
                 wget $ARM
-                tar xfvz libftd2xx-arm-v7-hf-1.4.27.tgz
+                tar xfvz libftd2xx-arm-v7-hf-1.4.34.tgz
                 cd release/build
                 cp libftd2xx.* /usr/local/lib
-                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.27
+                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.34
                 ln -sf /usr/local/lib/libftd2xx.so.1.4.27 /usr/local/lib/libftd2xx.so
         elif [ "$ARC" = "i686" ];
         then
                 wget $X32
-                tar xfvz libftd2xx-x86_32-1.4.27.tgz
+                tar xfvz libftd2xx-x86_32-1.4.34.tgz
                 cd release/build
                 cp libftd2xx.* /usr/local/lib
-                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.27
-                ln -sf /usr/local/lib/libftd2xx.so.1.4.27 /usr/local/lib/libftd2xx.so
+                chmod 0755 /usr/local/lib/libftd2xx.so.1.4.34
+                ln -sf /usr/local/lib/libftd2xx.so.1.4.34 /usr/local/lib/libftd2xx.so
         fi
 else
         echo "------------------------------------------------------------------------------"
